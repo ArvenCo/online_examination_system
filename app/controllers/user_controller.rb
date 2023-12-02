@@ -1,14 +1,21 @@
 class UserController < ApplicationController
-    def index
-    end
     def new
         @user = User.new
-        url = request.original_fullpath
-        if url == "/user/instructor/new"
-            @user = User.new(role: "instructor")
-        else
-            @user = User.new(role: "student")
-        end
-        
     end
+
+    def create
+        @user = User.new(user_params)
+        
+        if @user.save
+            
+        else
+            flash[:notice] = @user.errors.full_messages
+            redirect_back fallback_location: root_path
+        end
+    end
+    private
+    def user_params
+        params.require(:user).permit(:name, :username, :password, :password_confirmation)
+    end
+    
 end
