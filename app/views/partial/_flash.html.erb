@@ -1,4 +1,6 @@
 <% flash.each do |type, msg| %>
+    
+    
     <% case type %>
     <%when "error" %>
     <div class="alert alert-danger" role="alert">
@@ -13,4 +15,7 @@
         <% end %>
     </div>
     <% end %>
+    
+    
+    
 <% end %>
