@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get "/user/instructor/new" => "user#new", as: :new_instructor
   get "/user/student/new" => "user#new", as: :new_student 
   post "/user/create" => "user#create", as: :users
+
+  get "login" => "session#new", as: :new_session
   root "user#index"
   # Defines the root path route ("/")
   # root "posts#index"

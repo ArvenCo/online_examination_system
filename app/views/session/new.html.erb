@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-center">
+    <div class="card w-25 mt-5">
+        <p class="fs-2 fw-medium text-center">Log in</p>
+        <div class="card-body">
+            <%= form_with model: @user, url: users_path do |f| %>
+                
+                <div class="mb-3">
+                    <%= f.label :username, class: "form-label"%>
+                    <%= f.text_field :username, class: "form-control" %>
+                </div>
+                <div class="mb-3">
+                <%= f.label :password, class: "form-label"%>
+                <%= f.password_field :password, class: "form-control" %>        
+                </div>
+                
+
+                
+                <div class="mb-3 d-flex justify-content-center">
+                    <%= f.submit "Signup", class: "btn btn-primary w-75"%>
+                </div>
+                
+                <p >Don't had an account? Click <%= link_to "here", root_path %> to signup</p>
+            <% end %>
+        </div>
+    </div>
+
+</div>
