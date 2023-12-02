@@ -1,6 +1,11 @@
 <div class="d-flex justify-content-center">
     <div class="card w-25 mt-5">
-        <p class="fs-2 fw-medium text-center">Sign up</p>
+        <p class="fs-4 fw-medium m-0 text-center">Sign up as</p>
+        <% if request.original_fullpath == "/user/instructor/new" %>
+        <p class="fs-2 text-center">Instructor</p>
+        <% else %>
+        <p class="fs-2 text-center">Student</p>
+        <% end %>
         <div class="card-body">
             <%= form_with model: @user, url: users_path do |f| %>
                 <%= render "partial/flash"%>
