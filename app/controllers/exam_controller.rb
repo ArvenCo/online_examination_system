@@ -14,7 +14,7 @@ class ExamController < ApplicationController
                 
             end
             @item = Item.new 
-            4.times { @items.choices.build }
+            4.times { @item.choices.build }
         else
             render_404
         end
