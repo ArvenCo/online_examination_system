@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_02_075657) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_03_060117) do
   create_table "exams", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_exams_on_user_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.integer "exam_id", null: false
+    t.string "question"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_items_on_exam_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -29,4 +37,5 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_02_075657) do
   end
 
   add_foreign_key "exams", "users"
+  add_foreign_key "items", "exams"
 end
