@@ -10,6 +10,25 @@
 
         
     </div>
+
+    <div class="d-flex justify-content-center">
+        <div class="card w-50">
+            <div class="card-body px-2">
+                <% @ins_exams.each do |exam| %>
+                    <% if exam.user_id == session[:user_id] %>
+                    <div class="d-flex justify-content-between"> 
+                        <p>
+                            <%= exam.name %> 
+                        </p>
+                        <div>
+                            <a href="" class="text-decoration-none text-dark">Edit</a>
+                        </div>
+                    </div>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
     <% else %>
     <% end %>
 
@@ -20,16 +39,23 @@
     <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="new-examModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="new-examModalLabel">New Exam</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <%= form_with model: @exam, url: create_exam_path, method: :post do |f|%>
         <div class="modal-body">
-        ...
+            <%= render "partial/flash"%>
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+        <%= f.hidden_field :user_id, :value => @current_user.id %>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <%= f.submit "Submit", class: "btn btn-primary" %>
         </div>
+        <% end %>
+        
+        
     </div>
     </div>
 </div>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   post "login" => "session#create", as: :create_session
   delete "logout" => "session#destroy", as: :destroy_session
 
+  post "exam" => "exam#create", as: :create_exam
   root "exam#index"
   # Defines the root path route ("/")
   # root "posts#index"
