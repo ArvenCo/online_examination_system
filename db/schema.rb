@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_03_060117) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_03_125332) do
+  create_table "choices", force: :cascade do |t|
+    t.integer "item_id", null: false
+    t.string "option"
+    t.boolean "correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_choices_on_item_id"
+  end
+
   create_table "exams", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
@@ -36,6 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_03_060117) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "choices", "items"
   add_foreign_key "exams", "users"
   add_foreign_key "items", "exams"
 end

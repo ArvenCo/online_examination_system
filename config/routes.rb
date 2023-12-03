@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   post "exam/create" => "exam#create", as: :create_exam
   get "exam/:id", to: "exam#edit", as: :edit_exam
   put "exam/:id" => "exam#update", as: :update_exam
+
+  post "item/create" => "item#create", as: :create_item
+  
   root "exam#index"
   # Defines the root path route ("/")
   # root "posts#index"

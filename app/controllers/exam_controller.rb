@@ -9,7 +9,12 @@ class ExamController < ApplicationController
         check_session
         if Exam.exists?(params[:id])
             @exam = Exam.find(params[:id])
-            
+            if Item.exists?(exam_id: @exam.id)
+                @items= Item.find(user_id: @exam.id)
+                
+            end
+            @item = Item.new 
+            4.times { @items.choices.build }
         else
             render_404
         end
@@ -20,10 +25,10 @@ class ExamController < ApplicationController
         exam.name = params[:exam][:name]
         if exam.save
           flash[:success] = "Exam was successfully updated"
-          redirect_to edit_exam_path
+          redirect_back fallback_location: root_path
         else
           flash[:error] = "Something went wrong"
-          render :edit
+          redirect_back fallback_location: root_path
         end
     end
     
