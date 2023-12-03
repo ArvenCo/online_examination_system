@@ -10,7 +10,7 @@ class ExamController < ApplicationController
         if Exam.exists?(params[:id])
             @exam = Exam.find(params[:id])
             if Item.exists?(exam_id: @exam.id)
-                @items= Item.find(user_id: @exam.id)
+                @items= Item.find_by(exam_id: @exam.id)
                 
             end
             @item = Item.new 
