@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   post "login" => "session#create", as: :create_session
   delete "logout" => "session#destroy", as: :destroy_session
 
-  post "exam" => "exam#create", as: :create_exam
+  post "exam/create" => "exam#create", as: :create_exam
+  get "exam/:id", to: "exam#edit", as: :edit_exam
+  put "exam/:id" => "exam#update", as: :update_exam
   root "exam#index"
   # Defines the root path route ("/")
   # root "posts#index"
