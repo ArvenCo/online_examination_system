@@ -2,17 +2,14 @@
 
 <div class="container mt-5">
     <div class="card mb-3">
-        <div class="card-body">
+        <div class="card-body px-5">
             <%= form_with model: @exam, url: update_exam_path(@exam), method: :put do |f| %>
 
             <div class="d-flex w-50">
                 
                 <div class="flex-grow-1 d-flex">
-                    <div class="mx-2">
-                        <label for="exam_name" class="col-form-label">Exam:</label>
-                    </div>
                     <div class="flex-grow-1 mx-2">
-                        <%= f.text_field :name, class: "form-control-plaintext px-2 border-bottom w-100"  %>
+                        <%= f.text_field :name, class: "form-control-plaintext form-control-lg px-2 border-bottom w-100"  %>
                     </div>
                     
                 </div>
@@ -21,48 +18,110 @@
                 <% end %>
             </div>
             <% end %>
+            
+            <div class="d-flex justify-content-end">
+
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                    <i class="bi bi-plus-lg"></i>
+                        Item
+                </button>
+                  
+                
+            </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <%= form_with model: @item, url: create_item_path, method: :post do |f| %>
-            <%= render "partial/flash"%>
-            <%= f.hidden_field :exam_id , :value => @exam.id %>
+    
+
+
+    <ul class="list-group list-group-flush list-group-numbered">
+        <% @items.each do |item|%>
+        <% if item.exam_id == @exam.id %>
+        <li class="list-group-item ">
+            <%= form_with model: item, url: update_item_path(item), method: :put do |itemf| %>
+            
             <div class="form-floating mb-3">
-                <%= f.text_area :question, class: "form-control"%>
-                <%= f.label :question %>
+                <%= itemf.text_area :question, class: "form-control" %>
+                <%= itemf.label :question %>
             </div>
-            <div class="row">
-                <%= f.fields_for :choices do |choice| %>
-                <div class="mb-3 col-6 ">
+            
+            <div class="row ">
+               
+                <%= itemf.fields_for :choices do |cf|%>
+                <div class="col-6 mb-2">
                     <div class="form-floating">
-                        <%= choice.text_area :option, class: "form-control"%>
-                        <%= choice.label :option %>
+                        <%= cf.text_area :option, class: "form-control" %>
+                        <%= cf.label :option %>
                     </div>
                     <div class="form-check">
-                        <%= choice.check_box :correct, :value=>"deng", class: "form-check-input" %>
-                        <%= choice.label :correct, class: "form-check-label" %>
+                        <%= cf.check_box :correct, class: "form-check-input" %>
+                        <%= cf.label :correct, class: "form-check-label" %>
                     </div>
-                    
                 </div>
                 <% end %>
             </div>
             <div class="d-flex justify-content-end">
+                <%= button_tag(type: 'submit', class: 'btn btn-secondary', tabindex: '3') do %>
+                    <i class="bi bi-pencil-square"></i>
+                    Update
+                <% end %>
+            </div>
+            
+            <% end %>
+            
+        </li>   
+        <% end %> 
+        <% end %>
+        
+    </ul>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addItemModalLabel">New Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <%= form_with model: @item, url: create_item_path, method: :post do |f| %>
+            <div class="modal-body">
+                <%= render "partial/flash"%>
+                <%= f.hidden_field :exam_id , :value => @exam.id %>
+                <div class="form-floating mb-3">
+                    <%= f.text_area :question, class: "form-control"%>
+                    <%= f.label :question %>
+                </div>
+                <div class="row">
+                    <%= f.fields_for :choices do |choice| %>
+                    <div class="mb-3 col-6 ">
+                        <div class="form-floating">
+                            <%= choice.text_area :option, class: "form-control"%>
+                            <%= choice.label :option %>
+                        </div>
+                        <div class="form-check">
+                            <%= choice.check_box :correct, :value=>"deng", class: "form-check-input" %>
+                            <%= choice.label :correct, class: "form-check-label" %>
+                        </div>
+                        
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+            
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <%= button_tag(type: 'submit', class: 'btn btn-primary', tabindex: '3') do %>
-                <i class="bi bi-plus-lg"></i>
-                Question
+                Submit
                 <% end %>
             </div>
             <% end %>
 
-            <div class="card mt-5">
-                <div class="card-body">
 
-                </div>
-                
-            </div>
             
+           
         </div>
     </div>
 </div>

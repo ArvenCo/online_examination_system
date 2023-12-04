@@ -10,8 +10,8 @@ class ExamController < ApplicationController
         if Exam.exists?(params[:id])
             @exam = Exam.find(params[:id])
             if Item.exists?(exam_id: @exam.id)
-                @items= Item.find_by(exam_id: @exam.id)
-                
+                @items= Item.all
+                @choices = Choice.all
             end
             @item = Item.new 
             4.times { @item.choices.build }

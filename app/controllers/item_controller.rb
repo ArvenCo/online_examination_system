@@ -10,8 +10,18 @@ class ItemController < ApplicationController
         end
     end
 
+    def update
+        item =Item.find(params[:id])
+        if item.update(item_params)
+            flash[:success] = "Item updated successfully"
+            redirect_back fallback_location: root_path
+        else
+            flash.now[:error] = "Item update failed."
+        end
+    end
+
     private
     def item_params
-        params.require(:item).permit(:exam_id, :question, choices_attributes: [:option, :correct])
+        params.require(:item).permit(:exam_id, :question, choices_attributes: [:id, :option, :correct])
     end
 end
