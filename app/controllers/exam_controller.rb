@@ -20,10 +20,18 @@ class ExamController < ApplicationController
         end
     end
 
+    def create
+        exam = Exam.new(exams_params)
+        if exam.save
+            redirect_to root_path
+        else
+            flash.now[:error] = exam.errors.full_messages
+        end
+    end
+
     def update
         exam = Exam.find(params[:id])
-        exam.name = params[:exam][:name]
-        if exam.save
+        if exam.update(exams_params)
           flash[:success] = "Exam was successfully updated"
           redirect_back fallback_location: root_path
         else
@@ -31,15 +39,9 @@ class ExamController < ApplicationController
           redirect_back fallback_location: root_path
         end
     end
-    
-    
 
-    def create
-        exam = Exam.new(user_id: params[:exam][:user_id], name: params[:exam][:name])
-        if exam.save
-            redirect_to root_path
-        else
-            flash.now[:error] = exam.errors.full_messages
-        end
+    private
+    def exams_params
+        params.require(:exam).permit(:user_id, :name, :timer)
     end
 end
