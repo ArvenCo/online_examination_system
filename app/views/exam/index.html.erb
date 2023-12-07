@@ -30,6 +30,28 @@
         </div>
     </div>
     <% else %>
+    <div class="d-flex justify-content-center">
+        <div class="card w-50">
+            <div class="card-body px-2">
+                <% @ins_exams.each do |exam| %>
+                    <div class="d-flex justify-content-between"> 
+                        <div class="ps-3">
+                            <p class="m-0">
+                                <%= exam.name %> 
+                            </p>
+                            <p class="fw-light ms-4 m-0">
+                                by
+                                <%= exam.user.name %> 
+                            </p>
+                        </div>
+                        <div>
+                            <%= link_to "Answer Exam", edit_exam_path(exam), class: "btn"%>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
     <% end %>
 
 </div>
