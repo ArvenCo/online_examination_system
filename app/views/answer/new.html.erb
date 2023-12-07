@@ -1,4 +1,20 @@
 <%= render "partial/navbar" %>
 <div class="container mt-5">
-    Answer Exam
+    <div class="mb-5">
+        <p class="fs-3 m-0"> Examination: <span class="border-bottom px-3"><%= @exam.name %> </span> </p>
+        <p class="fs-5">By: <%= @exam.user.name %></p>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <ul class="list-group list-group-numbered list-group-flush">
+                <% @exam.items.each do |item| %>
+                    <li class="list-group-item">
+                        <%= form_with model: item, url: %>
+                    </li>
+                <% end %>
+            </ul>
+
+        </div>
+        
+    </div>
 </div>
