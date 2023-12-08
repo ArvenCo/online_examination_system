@@ -7,10 +7,29 @@
     <div class="card">
         <div class="card-body">
             <ul class="list-group list-group-numbered list-group-flush">
-                <% @exam.items.each do |item| %>
-                    <li class="list-group-item">
-                        <%= form_with model: item, url: %>
-                    </li>
+                <%= form_with model: @answers, url: create_answer_path do |form| %>
+                    <% @items.each.with_index do |item, index| %>
+                        
+                        <li class="list-group-item">
+                            <%= item.question %>
+                            <%= form.fields_for @answers[index], index: item.id do |ff| %>
+                                <%= ff.hidden_field :exam_session_id, :value=>@exam_session.id %>
+                                <%= ff.collection_radio_buttons :choice_id, Choice.where(item_id: item.id), :id, :option, class: "form-control", checked: false do |coll|%>
+                                    <div class="form-check">
+                                        <%= coll.radio_button(html_options: {checked: false}) %>
+                                        <%= coll.label %>
+                                    </div>
+                                <% end %>
+                            <% end %>
+
+                        </li>
+
+                    <% end %>
+                    
+                    <div class="d-flex justify-content-end">
+                        <%= form.submit "Submit", class: "btn btn-primary px-5"%>
+
+                    </div>
                 <% end %>
             </ul>
 
@@ -18,3 +37,5 @@
         
     </div>
 </div>
+
+<%= render "partial/flash" %>

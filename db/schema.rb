@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_07_151751) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_08_053618) do
   create_table "answers", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "exam_session_id", null: false
     t.integer "choice_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["choice_id"], name: "index_answers_on_choice_id"
-    t.index ["user_id"], name: "index_answers_on_user_id"
+    t.index ["exam_session_id"], name: "index_answers_on_exam_session_id"
   end
 
   create_table "choices", force: :cascade do |t|
@@ -27,6 +27,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_151751) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_choices_on_item_id"
+  end
+
+  create_table "exam_sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "exam_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_exam_sessions_on_exam_id"
+    t.index ["user_id"], name: "index_exam_sessions_on_user_id"
   end
 
   create_table "exams", force: :cascade do |t|
@@ -56,8 +65,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_151751) do
   end
 
   add_foreign_key "answers", "choices"
-  add_foreign_key "answers", "users"
+  add_foreign_key "answers", "exam_sessions"
   add_foreign_key "choices", "items"
+  add_foreign_key "exam_sessions", "exams"
+  add_foreign_key "exam_sessions", "users"
   add_foreign_key "exams", "users"
   add_foreign_key "items", "exams"
 end

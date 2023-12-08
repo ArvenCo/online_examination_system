@@ -18,7 +18,7 @@
                     <% if exam.user_id == session[:user_id] %>
                     <div class="d-flex justify-content-between"> 
                         <p>
-                            <%= exam.name %> 
+                            <%= exam.name %>
                         </p>
                         <div>
                             <%= link_to "Edit", edit_exam_path(exam), class: "btn"%>
@@ -55,6 +55,7 @@
     <% end %>
 
 </div>
+<%= render "partial/flash" %>
 
 <!-- Modal -->
 <div class="modal fade" id="new-examModal" tabindex="-1" aria-labelledby="new-examModalLabel" aria-hidden="true">
