@@ -23,6 +23,11 @@ Rails.application.routes.draw do
 
   get "examination/:id" => "answer#new", as: :new_answer
   post "examination/create" => "answer#create", as: :create_answer
+  get "examination/show/:id" => "answer#show", as: :show_answer
+
+
+  get "exams_taken/:id" => "exam_session#index", as: :index_exam_session
+  
 
   root "exam#index"
   # Defines the root path route ("/")

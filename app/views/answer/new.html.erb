@@ -8,6 +8,7 @@
         <div class="card-body">
             <ul class="list-group list-group-numbered list-group-flush">
                 <%= form_with model: @answers, url: create_answer_path do |form| %>
+                    <%= form.hidden_field :exam_session_id, :value => @exam_session.id%>
                     <% @items.each.with_index do |item, index| %>
                         
                         <li class="list-group-item">

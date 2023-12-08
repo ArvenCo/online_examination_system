@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_08_053618) do
   create_table "exam_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "exam_id", null: false
+    t.integer "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_exam_sessions_on_exam_id"

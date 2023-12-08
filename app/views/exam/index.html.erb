@@ -12,20 +12,34 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <div class="card w-50">
+        <div class="card w-75">
             <div class="card-body px-2">
-                <% @ins_exams.each do |exam| %>
-                    <% if exam.user_id == session[:user_id] %>
-                    <div class="d-flex justify-content-between"> 
-                        <p>
-                            <%= exam.name %>
-                        </p>
-                        <div>
-                            <%= link_to "Edit", edit_exam_path(exam), class: "btn"%>
-                        </div>
-                    </div>
+                <ul class="list-group list-group-flush">
+                    <% @ins_exams.each do |exam| %>
+                        <% if exam.user_id == session[:user_id] %>
+                        <li class="list-group-item">
+                            <div class="row"> 
+                                <div class="col-4">
+                                    <p class="m-0">
+                                        <%= exam.name %>
+                                    </p>
+                                </div>
+                                <div class="col-6 d-flex justify-content-center align-items-center">
+                                    <p class="m-0">
+                                        Taken by: <%= ExamSession.where(exam_id: exam.id).length %> student(s)
+                                    </p>
+                                    <%= link_to "View", index_exam_session_path(exam), class: "mx-2 text-decoration-none"  %>
+                                </div>
+                                
+                                <div class="col-1">
+                                    <%= link_to "Edit", edit_exam_path(exam), class: "mx-2 text-decoration-none"%>
+                                </div>
+                            </div>
+                        </li>
+                        <% end %>
                     <% end %>
-                <% end %>
+
+                </ul>
             </div>
         </div>
     </div>
@@ -33,22 +47,35 @@
     <div class="d-flex justify-content-center">
         <div class="card w-50">
             <div class="card-body px-2">
-                <% @ins_exams.each do |exam| %>
-                    <div class="d-flex justify-content-between"> 
-                        <div class="ps-3">
-                            <p class="m-0">
-                                <%= exam.name %> 
-                            </p>
-                            <p class="fw-light ms-4 m-0">
-                                by
-                                <%= exam.user.name %> 
-                            </p>
-                        </div>
-                        <div>
-                            <%= link_to "Answer Exam", new_answer_path(exam), class: "btn"%>
-                        </div>
-                    </div>
-                <% end %>
+                <ul class="list-group list-group-flush">
+                    <% @ins_exams.each do |exam| %>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between"> 
+                                <div class="px-3">
+                                    <p class="m-0">
+                                        <%= exam.name %> 
+                                    </p>
+                                    <p class="fw-light ms-4 m-0">
+                                        by
+                                        <%= exam.user.name %> 
+                                    </p>
+                                </div>
+                                <div class="h-100 d-flex align-items-center">
+                                    <%  exs = ExamSession.find_by(user_id: @current_user.id, exam_id: exam.id)
+                                    if  exs.present? &&  answer=Answer.find_by(exam_session_id: exs.id).present?  
+                                    %>
+                                    <p>score: <%= exs.score %> / <%= Item.where(exam_id: exam.id).length %></p>
+                                    
+    
+                                    <% else %>
+                                        <%= link_to "Answer Exam", new_answer_path(exam), class: "btn"%>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </li>
+                    <% end %>
+
+                </ul>
             </div>
         </div>
     </div>

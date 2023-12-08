@@ -41,7 +41,7 @@
 
 
     <ul class="list-group list-group-flush list-group-numbered">
-        <% if Item.any? %>
+        <% if Item.exists?(exam_id: @exam.id) %>
             <% @items.each do |item|%>
                 <% if item.exam_id == @exam.id %>
                 <li class="list-group-item ">

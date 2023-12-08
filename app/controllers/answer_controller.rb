@@ -1,5 +1,12 @@
 class AnswerController < ApplicationController
 
+    def show
+        check_session
+        @exam_session = ExamSession.find(params[:id])
+
+    end
+    
+
     def new
         check_session
         @exam = Exam.find(params[:id])
@@ -13,28 +20,27 @@ class AnswerController < ApplicationController
         @answers = Array.new(@items.length, Answer.new)
     end
 
+
     def create
         answers = params[:answer][:answer]
-        
+        score = 0
         answers.each do |item_id, attr|
             
-            if Answer.create!(exam_session_id: attr[:exam_session_id], choice_id: attr[:choice_id])
+            if answer = Answer.create!(exam_session_id: attr[:exam_session_id], choice_id: attr[:choice_id])
                 flash[:success] = "Answer successfully created"
-                
+                choice = Choice.find_by_id(answer.choice_id)
+                if choice.correct == true
+                    score += 1
+                end
             else
                 flash[:error] = "Something went wrong"
                 redirect_back fallback_location: root_path
             end
         end
+        exam_session = ExamSession.find_by_id(params[:answer][:exam_session_id])
+        exam_session.update(score: score)
         redirect_to root_path
         
     end
-    
-    
-
-    private
-    # def exam_session_params
-    #     params.require(:exam_session).permit(choices_attributes: [:id, :user_id, :exam_session_id])
-    # end
     
 end
