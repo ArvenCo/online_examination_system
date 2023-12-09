@@ -33,11 +33,17 @@ class ExamController < ApplicationController
     end
 
     def create
-        exam = Exam.new(exams_params)
-        if exam.save
-            redirect_to root_path
+        
+        if Exam.find(exams_params).empty?
+            exam = Exam.new(exams_params)
+            if exam.save
+                flash[:success] = "Exam successfully created"
+                redirect_to edit_exam_path(exam)
+            else
+                flash.now[:error] = "Something went wrong"
+            end
         else
-            flash.now[:error] = exam.errors.full_messages
+            flash.now[:error] = "Exam already exists"
         end
     end
 
