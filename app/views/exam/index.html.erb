@@ -1,7 +1,6 @@
 <%= render "partial/navbar" %>
 <div class="container mt-3">
     <p class="fs-2">Exams</p>
-    <%= @current_user.created_at.getlocal %>
     <% if @current_user.role == "instructor" %>
     <div class="d-flex justify-content-end">
         <!-- Button trigger modal -->
