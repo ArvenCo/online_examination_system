@@ -1,7 +1,7 @@
 <%= render "partial/navbar" %>
 <div class="container mt-3">
     <p class="fs-2">Exams</p>
-    
+    <%= @current_user.created_at.getlocal %>
     <% if @current_user.role == "instructor" %>
     <div class="d-flex justify-content-end">
         <!-- Button trigger modal -->
@@ -78,7 +78,7 @@
                                     <span class="mx-3">score: <%= exs.score %> / <%= Item.where(exam_id: exam.id).length %></span class="mx-3">
                                     <%= link_to "Review", show_exam_session_path(exs), class: "text-decoration-none"%>
                                     <% else %>
-                                        <%= link_to "Answer Exam", new_answer_path(exs), class: "btn"%>
+                                        <%= link_to "Answer Exam", new_answer_path(exam.id), class: "btn"%>
                                     <% end %>
                                 </div>
                             </div>

@@ -33,8 +33,10 @@ class ExamController < ApplicationController
     end
 
     def create
-        
-        if Exam.find(exams_params).empty?
+        if Exam.find_by(exams_params).present?
+            flash.now[:error] = "Exam already exists"
+        else
+            
             exam = Exam.new(exams_params)
             if exam.save
                 flash[:success] = "Exam successfully created"
@@ -42,8 +44,6 @@ class ExamController < ApplicationController
             else
                 flash.now[:error] = "Something went wrong"
             end
-        else
-            flash.now[:error] = "Exam already exists"
         end
     end
 
