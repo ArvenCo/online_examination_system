@@ -3,10 +3,10 @@ class ExamController < ApplicationController
         check_session
         @exam = Exam.new
         if params[:search].present?
-            @user_ids = User.where("name LIKE ?", "%"+ params[:search] +"%").pluck(:id)
+            user_ids = User.where("name LIKE ?", "%"+ params[:search] +"%").pluck(:id)
             
-            if @user_ids.length > 0
-                @exams = Exam.where("name LIKE ?", "%"+params[:search]+"%").or(Exam.where(user_id: @user_ids))
+            if user_ids.length > 0
+                @exams = Exam.where("name LIKE ?", "%"+params[:search]+"%").or(Exam.where(user_id: user_ids))
             else
                 @exams = Exam.where("name LIKE ?", "%"+params[:search]+"%")
             end
