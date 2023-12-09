@@ -2,7 +2,19 @@ class ExamController < ApplicationController
     def index
         check_session
         @exam = Exam.new
-        @ins_exams = Exam.all
+        if params[:search].present?
+            @user_ids = User.where("name LIKE ?", "%"+ params[:search] +"%").pluck(:id)
+            
+            if @user_ids.length > 0
+                @exams = Exam.where("name LIKE ?", "%"+params[:search]+"%").or(Exam.where(user_id: @user_ids))
+            else
+                @exams = Exam.where("name LIKE ?", "%"+params[:search]+"%")
+            end
+            
+        else
+            @exams = Exam.all
+        end
+        
     end
 
     def edit

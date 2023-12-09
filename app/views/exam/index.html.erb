@@ -1,21 +1,21 @@
 <%= render "partial/navbar" %>
 <div class="container mt-3">
     <p class="fs-2">Exams</p>
+    
     <% if @current_user.role == "instructor" %>
     <div class="d-flex justify-content-end">
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-examModal">
             New Exam
         </button>
-
-        
-    </div>
-
+    </div>  
     <div class="d-flex justify-content-center">
         <div class="card w-75">
             <div class="card-body px-2">
+                
+                <%= render "partial/search", url_path: root_path%>
                 <ul class="list-group list-group-flush">
-                    <% @ins_exams.each do |exam| %>
+                    <% @exams.each do |exam| %>
                         <% if exam.user_id == session[:user_id] %>
                         <li class="list-group-item">
                             <div class="row"> 
@@ -45,10 +45,15 @@
     </div>
     <% else %>
     <div class="d-flex justify-content-center">
-        <div class="card w-50">
+        <div class="card w-75">
             <div class="card-body px-2">
+                <%= render "partial/search", url_path: root_path%>
                 <ul class="list-group list-group-flush">
-                    <% @ins_exams.each do |exam| %>
+                    <% curremt_time = DateTime.current.utc 
+                    %>
+                    
+                    <% @exams.each do |exam| %>
+                        
                         <li class="list-group-item">
                             <div class="d-flex justify-content-between"> 
                                 <div class="px-3">
@@ -57,18 +62,23 @@
                                     </p>
                                     <p class="fw-light ms-4 m-0">
                                         by
-                                        <%= exam.user.name %> 
+                                        <%= exam.user.name %>
                                     </p>
                                 </div>
                                 <div class="h-100 d-flex align-items-center">
-                                    <%  exs = ExamSession.find_by(user_id: @current_user.id, exam_id: exam.id)
-                                    if  exs.present? &&  answer=Answer.find_by(exam_session_id: exs.id).present?  
-                                    %>
-                                    <p>score: <%= exs.score %> / <%= Item.where(exam_id: exam.id).length %></p>
+                                    <% exs = ExamSession.find_by(user_id: @current_user.id, exam_id: exam.id) 
+                                    time_exceed = false
+                                    if exs.present? 
+                                            time_exceed = exam.timer.minutes < ((curremt_time) - (exs.created_at + exam.timer.minutes)) 
+                                    end %>
                                     
-    
+                                    <% if exs.present? &&  answer=Answer.find_by(exam_session_id: exs.id).present? || time_exceed %>
+                                    
+                                    
+                                    <span class="mx-3">score: <%= exs.score %> / <%= Item.where(exam_id: exam.id).length %></span class="mx-3">
+                                    <%= link_to "Review", show_exam_session_path(exs), class: "text-decoration-none"%>
                                     <% else %>
-                                        <%= link_to "Answer Exam", new_answer_path(exam), class: "btn"%>
+                                        <%= link_to "Answer Exam", new_answer_path(exs), class: "btn"%>
                                     <% end %>
                                 </div>
                             </div>

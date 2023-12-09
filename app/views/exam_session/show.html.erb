@@ -1,0 +1,51 @@
+<%= render "partial/navbar" %>
+<div class="container mt-5">
+    <p class="fs-3 m-0">Examination: <%= exam = Exam.find(@exam_session.exam_id).name %> </p>
+    <% items = Item.where(exam_id: @exam_session.exam_id)%>
+    <p>Items: <%= items.length %></p>
+    <span>Name: <span class=""><%= User.find(@exam_session.user_id).name %></span></span>
+    <p class="">Score: <%= @exam_session.score  %></p>
+    <div class="card mt-5">
+        <div class="card-body">
+            <ul class="list-group list-group-flush list-group-numbered">
+                <% items.each do |item| %>
+                <li class="list-group-item">
+                    <%= item.question %>
+                    <p class="my-0">Answer: </p>
+                    
+                    <%  
+                        correct_answer = ""
+                        item.choices.each do |choice| 
+                        if choice.correct == true
+                            correct_answer = choice.option
+                        end    
+                    %>
+                        
+                        
+
+                        <div class="d-flex align-items-center">
+                            <%if choice.answers.present? 
+
+                            if choice.correct %>
+                                <i class="bi bi-check2-circle fs-2 text-success"></i> <span class="ms-2"><%= choice.option %></span>
+                                
+                            <% else %>
+                                <i class="bi bi-x fs-2 text-danger"></i> <span class="ms-2"><%= choice.option  %></span> 
+                                <% if @current_user.role == "instructor"%>
+
+                                <span class="text-success mx-3">Correct Answer: <span class="text-decoration-underline"><%= correct_answer %></span></span>
+                                <% end %>
+                           <% end %>
+                        
+
+                        <% end %>
+                            
+                        </div>
+                    <% end %>                        
+                   
+                </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+</div>
